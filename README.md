@@ -86,6 +86,12 @@ Path	                Component	                           Notes
 /admin/list-shows	     ListShows	           Admin page for viewing a list of scheduled shows.
 /admin/list-bookings	ListBookings	            Admin page for viewing user bookings.
 
+API EndPoints
+/api/show/now-playing - fetches list of movies playin now
+/api/show/add  - allows user to add shows and ticket price
+/api/show/all  - fetches all shows
+.api/show/:movieId  - fetches show details for the particular movie
+
 
 ##  Tech Stack
 
