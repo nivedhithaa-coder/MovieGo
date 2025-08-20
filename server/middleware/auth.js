@@ -1,0 +1,18 @@
+import { clerkClient } from "@clerk/express";
+
+export const protectAdmin=async(reqq,resizeBy,next)=>{
+    try{
+        const {userId}=reqq.auth();
+        const user=await clerkClient.users.getUser(userId)
+
+        if(user.privateMetadata.role!=='admin'){
+            return res.json({success:false,message:'NOT AUTHORIZED'})
+        }
+        else{
+            next();
+        }
+    }catch(error){  
+        return res.json({success:false,message:'NOT AUTHORIZED'});
+
+    }
+}
