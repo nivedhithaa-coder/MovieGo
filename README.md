@@ -73,6 +73,19 @@ movie-ticket-app/
 ├── .gitignore
 └── README.md
 
+Routes Breakdown
+Path	                Component	                           Notes
+/	                       Home	                       Renders the homepage.
+/movies	                Movies	                 Shows the list of available movies.
+/movies/:id	          MovieDetails	       Shows details for a specific movie. :id is the movie ID param.
+/movies/:id/:date	     SeatLayout	             Displays seat selection for a specific movie show date.
+/my-bookings	         MyBookings	                Displays the user's booking history.
+/admin/*	               Layout	                     Includes navigation/UI.
+/admin(index)	         Dashboard	            Default admin dashboard view when '/admin' is accessed.
+/admin/add-shows	     AddShows	                  Admin page for adding new showtimes.
+/admin/list-shows	     ListShows	           Admin page for viewing a list of scheduled shows.
+/admin/list-bookings	ListBookings	            Admin page for viewing user bookings.
+
 
 ##  Tech Stack
 
