@@ -2,6 +2,8 @@ import { Inngest } from "inngest";
 import User from "../models/User.js";
 import Booking from "../models/Booking.js"
 import Show from "../models/Show.js"
+
+import {sendEmail} from "../configs/nodemailer.js"
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "MovieGo" });
 
@@ -73,5 +75,30 @@ const releaseSeatsAndDeleteBooking=inngest.createFunction(
     }
 )
 
+//to send email whe booking done
+const BookingConfirmationEmail=inngest.createFunction(
+    {id:"send-booking-confirmation-email"},
+    {event:"app/show.booked"},
+    async({event,step})=>{
+        const {bookingId}=event.data;
+    const booking=await Booking.findById(bookingId).populate({
+        path:'show',
+        populate:{path:"movie",model:"Movie"}
+    }).populate('user');
+await sendEmail({
+    to:booking.user.email,
+    subject: `Booking Confirmation for "${booking.show.movie.title}"!!!`,
+    body:`<div style="font-family:Arial,sans-serif;line-height:1.5;">
+    <h2>Hi ${booking.user.name},</h2>
+    <p> Your booking for <strong style="color:#F84565;">"${booking.show.movie.title}"</strong> is confirmed.</p>
+    <p>Enjoy the show!!!</p>
+    <p> Thanks for booking with us!!!<br/> - Team MovieGo</p>
+    </div>`
+})    
+
+}
+
+)
+
 // Create an empty array where we'll export future Inngest functions
-export const functions = [syncUserCreation,syncUserDeletion,syncUserUpdation,releaseSeatsAndDeleteBooking];
+export const functions = [syncUserCreation,syncUserDeletion,syncUserUpdation,BookingConfirmationEmail,releaseSeatsAndDeleteBooking];
