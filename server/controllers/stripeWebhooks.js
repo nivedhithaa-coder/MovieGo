@@ -39,6 +39,6 @@ const sessionList=await stripeInstance.checkout.sessions.list({
         response.json({received:true})
     } catch (error) {
         console.log("Webhook error: ",error);
-        response.status(500).send("Internal server error");
+        res.status(500).send("Internal server error");
     }
 }
