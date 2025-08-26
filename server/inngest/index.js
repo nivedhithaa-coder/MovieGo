@@ -91,6 +91,9 @@ await sendEmail({
     body:`<div style="font-family:Arial,sans-serif;line-height:1.5;">
     <h2>Hi ${booking.user.name},</h2>
     <p> Your booking for <strong style="color:#F84565;">"${booking.show.movie.title}"</strong> is confirmed.</p>
+    <p> Date: ${new Date(booking.show.showDateTime).toLocaleDateString('en-US',{timeZone:'Asia/Kolkata'})}<br/>
+    Time: ${new Date(booking.show.showDateTime).toLocaleTimeString('en-US',{timeZone:'Asia/Kolkata'})}
+    </p>
     <p>Enjoy the show!!!</p>
     <p> Thanks for booking with us!!!<br/> - Team MovieGo</p>
     </div>`
