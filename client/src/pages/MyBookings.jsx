@@ -1,20 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { dummyBookingData } from '../assets/assets';
 import { dateFormat } from '../lib/dateFormat';
+import { useAppContext } from '../context/AppContext';
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
+
+  const{shows,axios,getToken,user,image_base_url}=useAppContext();
+
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  
   const getMyBookings = async () => {
-    setBookings(dummyBookingData);
+    try{
+      const{data}=await axios.get(`/api/user/bookings`,{
+        headers: {
+          Authorization: `Bearer ${await getToken()}`,
+        }
+      })
+    if(data.success)
+    {
+      setBookings(data.bookings)
+    }
+    }catch(error){
+      console.log(error)
+    }
+    
     setIsLoading(false);
   };
 
   useEffect(() => {
-    getMyBookings();
-  }, []);
+    if(user){
+      getMyBookings();
+    }
+    
+  }, [user]);
 
   if (isLoading) {
     return <div className="text-white">Loading...</div>;
@@ -30,7 +50,7 @@ const MyBookings = () => {
         >
           <div className="flex flex-col md:flex-row">
             <img
-              src={item.show.movie.poster_path}
+              src={image_base_url+item.show.movie.poster_path}
               alt={item.show.movie.title}
               className="md:max-w-45 aspect-video h-auto object-cover object-bottom rounded"
             />
@@ -39,7 +59,7 @@ const MyBookings = () => {
                 {item.show.movie.title}
               </p>
               <p className="text-gray-400 text-sm">
-                {item.show.movie.runtime}
+                {item.show.movie.runtime} mins
               </p>
               <p className="text-sm text-gray-400 mt-auto">
                 {dateFormat(item.show.showDateTime)}

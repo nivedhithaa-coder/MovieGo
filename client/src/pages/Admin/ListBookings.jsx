@@ -2,21 +2,31 @@ import React, { useEffect, useState } from "react";
 import { dummyShowsData, dummyBookingData } from "../../assets/assets";
 import Title from "../../components/admin/Title";
 import { dateFormat } from "../../lib/dateFormat";
+import { useAppContext } from "../../context/AppContext";
 
 const ListBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
+  const { axios, getToken, user } = useAppContext();
 
   const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
 
   const getAllBookings = async () => {
-    setBookings(dummyBookingData);
+    try {
+      const { data } = await axios.get('/api/admin/all-bookings', {
+        headers: { Authorization: `Bearer ${await getToken()}` },
+      });
+      setBookings(data.bookings)
+    }catch(error){
+      console.log(error);
+    }
     setLoading(false);
-  };
-
+  }
   useEffect(() => {
+    if(user){
     getAllBookings();
-  }, []);
+    }
+  }, [user]);
 
   return !loading ? (
     <>

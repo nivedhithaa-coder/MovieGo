@@ -4,10 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import BlurCircle from './BlurCircle'
 import { dummyShowsData } from '../assets/assets'
 import MovieCard from './MovieCard'
+import { useAppContext } from '../context/AppContext'
 
 const FeatureSection=()=>{
 const navigate=useNavigate()
 
+const {shows}=useAppContext()
+console.log(shows)
   return(
     <div className='px-6 md:px-16 lg:px-24 xl:px-44 overflow-hidden'>
         <div className='relative flex items-center justify-between pt-20 pb-10'>
@@ -21,11 +24,14 @@ const navigate=useNavigate()
 
         </div>
         <div className='flex flex-wrap max-sm:justify-center gap-8 mt-8'>
-            {dummyShowsData.slice(0,4).map((show)=>(
-                <MovieCard key={show.id} movie={show}/>
-            ))}
+  {shows
+    .filter(show => show.movie) // ✅ skip shows without a movie
+    .slice(0, 4)
+    .map(show => (
+      <MovieCard key={show._id} movie={show.movie} />
+    ))}
+</div>
 
-        </div>
         <div className='flex justify-center mt-20'>
             <button onClick={()=>{navigate('/movies');scrollTo(0,0)}} className='px-10 py-3 
             text-sm bg-primary hover:bg-primary-dull transition rounded-md font-medium 

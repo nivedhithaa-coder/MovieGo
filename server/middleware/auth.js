@@ -1,6 +1,6 @@
 import { clerkClient } from "@clerk/express";
 
-export const protectAdmin=async(reqq,resizeBy,next)=>{
+export const protectAdmin=async(req,res,next)=>{
     try{
         const {userId}=reqq.auth();
         const user=await clerkClient.users.getUser(userId)

@@ -2,9 +2,14 @@ import React from 'react'
 import AdminNavbar from '../../components/admin/AdminNavbar'
 import SideBar from '../../components/admin/SideBar'
 import { Outlet } from 'react-router-dom'
-
+import { useAppContext} from '../../context/AppContext'
 const Layout = () => {
-  return (
+
+  //To enable only admin to access admin page
+  //const{isAdmin, fetchIsAdmin}=useAppContext()
+
+  // return isAdmin?(
+  return(
     <div>
       <AdminNavbar/>
       <div className='flex'>
@@ -15,6 +20,7 @@ const Layout = () => {
       </div>
     </div>
   )
+  // ):<div>Loading...</div>
 }
 
 export default Layout
