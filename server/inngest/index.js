@@ -105,19 +105,19 @@ const BookingConfirmationEmail = inngest.createFunction(
       }
   
       // 🔹 Step 4: Send email
-      await sendEmail(
-        booking.userEmail, // to
-        `Booking Confirmation for "${show.movie.title}"!!!`, // subject
-        `<div style="font-family:Arial,sans-serif;line-height:1.5;">
-          <h2>Hi ${user.name},</h2>
-          <p>Your booking for <strong style="color:#F84565;">"${show.movie.title}"</strong> is confirmed.</p>
-          <p>Date: ${new Date(show.showDateTime).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata' })}<br/>
-          Time: ${new Date(show.showDateTime).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata' })}
-          </p>
-          <p>Enjoy the show!!!</p>
-          <p>Thanks for booking with us!<br/>- Team MovieGo</p>
-        </div>`
-      );
+      await sendEmail({
+        to: booking.userEmail, // ✅ recipient email
+        subject: `Booking Confirmation for "${show.movie.title}"!!!`,
+        body: `<div style="font-family:Arial,sans-serif;line-height:1.5;">
+                <h2>Hi ${user.name},</h2>
+                <p>Your booking for <strong style="color:#F84565;">"${show.movie.title}"</strong> is confirmed.</p>
+                <p>Date: ${new Date(show.showDateTime).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata' })}<br/>
+                Time: ${new Date(show.showDateTime).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata' })}
+                </p>
+                <p>Enjoy the show!!!</p>
+                <p>Thanks for booking with us!<br/>- Team MovieGo</p>
+              </div>`
+      });
     }
   );
   
