@@ -106,7 +106,7 @@ const BookingConfirmationEmail = inngest.createFunction(
   
       // 🔹 Step 4: Send email
       await sendEmail(
-        user.email, // to
+        booking.userEmail, // to
         `Booking Confirmation for "${show.movie.title}"!!!`, // subject
         `<div style="font-family:Arial,sans-serif;line-height:1.5;">
           <h2>Hi ${user.name},</h2>
