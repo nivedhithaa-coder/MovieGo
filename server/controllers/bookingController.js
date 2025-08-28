@@ -50,7 +50,9 @@ export const createBooking = async (req, res) => {
     if (!user) {
       return res.json({ success: false, message: "User not found" });
     }
-
+    console.log("👉 req.auth()", req.auth());
+    console.log("👉 headers:", req.headers.authorization);
+    
     // 🔹 Check seat availability
     const isAvailable = await checkSeatAvailability(showId, selectedSeats);
     if (!isAvailable) {
