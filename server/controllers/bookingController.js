@@ -2,7 +2,7 @@ import { inngest } from "../inngest/index.js";
 import Booking from "../models/Booking.js";
 import Show from "../models/Show.js"
 import stripe from 'stripe'
-
+import User from "../models/User.js";
 // Fn to create availability of selectedseats
 const checkSeatAvailability = async (showId, selectedSeats) => {
     try {
