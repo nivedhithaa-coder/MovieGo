@@ -77,44 +77,49 @@ const releaseSeatsAndDeleteBooking=inngest.createFunction(
 
 //to send email whe booking done
 // Inngest function to send booking confirmation email
-// Inngest function to send booking confirmation email
 const BookingConfirmationEmail = inngest.createFunction(
-  { id: "send-booking-confirmation-email" },
-  { event: "app/show.booked" },
-  async ({ event }) => {
-    const { bookingId } = event.data;
-
-    // 🔹 Step 1: Find booking
-    const booking = await Booking.findById(bookingId);
-    if (!booking) {
-      console.error("❌ Booking not found:", bookingId);
-      return;
+    { id: "send-booking-confirmation-email" },
+    { event: "app/show.booked" },
+    async ({ event }) => {
+      const { bookingId } = event.data;
+  
+      // 🔹 Step 1: Find booking
+      const booking = await Booking.findById(bookingId);
+      if (!booking) {
+        console.error("❌ Booking not found:", bookingId);
+        return;
+      }
+  
+      // 🔹 Step 2: Find user (manually, since user is a string ID)
+      const user = await User.findById(booking.user);
+      if (!user) {
+        console.error("❌ User not found for booking:", booking.user);
+        return;
+      }
+  
+      // 🔹 Step 3: Find show + populate movie
+      const show = await Show.findById(booking.show).populate("movie");
+      if (!show) {
+        console.error("❌ Show not found for booking:", booking.show);
+        return;
+      }
+  
+      // 🔹 Step 4: Send email
+      await sendEmail(
+        user.email, // to
+        `Booking Confirmation for "${show.movie.title}"!!!`, // subject
+        `<div style="font-family:Arial,sans-serif;line-height:1.5;">
+          <h2>Hi ${user.name},</h2>
+          <p>Your booking for <strong style="color:#F84565;">"${show.movie.title}"</strong> is confirmed.</p>
+          <p>Date: ${new Date(show.showDateTime).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata' })}<br/>
+          Time: ${new Date(show.showDateTime).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata' })}
+          </p>
+          <p>Enjoy the show!!!</p>
+          <p>Thanks for booking with us!<br/>- Team MovieGo</p>
+        </div>`
+      );
     }
-
-    // 🔹 Step 2: Find show + populate movie
-    const show = await Show.findById(booking.show).populate("movie");
-    if (!show) {
-      console.error("❌ Show not found for booking:", booking.show);
-      return;
-    }
-
-    // 🔹 Step 3: Send email directly using booking.userEmail
-    await sendEmail(
-      booking.userEmail, // ✅ use stored email
-      `Booking Confirmation for "${show.movie.title}"!!!`, // subject
-      `<div style="font-family:Arial,sans-serif;line-height:1.5;">
-        <h2>Hi,</h2>
-        <p>Your booking for <strong style="color:#F84565;">"${show.movie.title}"</strong> is confirmed.</p>
-        <p>Date: ${new Date(show.showDateTime).toLocaleDateString('en-US', { timeZone: 'Asia/Kolkata' })}<br/>
-        Time: ${new Date(show.showDateTime).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata' })}
-        </p>
-        <p>Enjoy the show!!!</p>
-        <p>Thanks for booking with us!<br/>- Team MovieGo</p>
-      </div>`
-    );
-  }
-);
-
+  );
   
 // Create an empty array where we'll export future Inngest functions
 export const functions = [syncUserCreation,syncUserDeletion,syncUserUpdation,BookingConfirmationEmail,releaseSeatsAndDeleteBooking];
