@@ -42,7 +42,11 @@ export const createBooking=async(req,res)=>{
         const {userId}=req.auth();
         const {showId,selectedSeats}=req.body;
         const {origin}=req.headers;
+        
 
+        // fetch user
+        const user = await User.findById(userId);
+        if (!user) return res.json({ success: false, message: "User not found" });
         //check seat availability
         const isAvailable=await checkSeatAvailability(showId,selectedSeats)
 
@@ -57,6 +61,7 @@ export const createBooking=async(req,res)=>{
         const booking=await Booking.create({
             user:userId,
             show:showId,
+            userEmail: user.email,
             amount:showData.showPrice*selectedSeats.length,
             bookedSeats:selectedSeats
         })
