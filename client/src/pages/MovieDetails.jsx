@@ -52,9 +52,9 @@ useEffect(() => {
   return show ?(
     <div className='px-6 md:px-16 lg:px-40 pt-30 md:pt-50'>
         <div className='flex flex-col md:flex-row gap-8 max-w-6xl mx-auto'>
-            <img src={image_base_url+show?.movie?.poster_path ?? "/fallback.png"} alt="" className='max-ms:mx-auto rounded-xl
+            <img src={image_base_url+(show?.movie?.poster_path ?? "/fallback.png")} alt="" className='max-ms:mx-auto rounded-xl
              h-104 max-w-70 object-cover'/>
-             <div className='relative flex flex-col gap=3'>
+             <div className='relative flex flex-col gap-3'>
                 <p className='text-primary'>ENGLISH</p>
                 <h1 className="text-4xl font-semibold max-w-96 mb-2 text-balance">{show.movie.title}</h1>
                 <div className='flex items-center mb-4 gap-2 text-gray-300'>
