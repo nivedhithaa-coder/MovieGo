@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
 } from "recharts";
 
 const ReportsDashboard = () => {
@@ -15,13 +22,14 @@ const ReportsDashboard = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const [moviesRes, movieOccRes, showOccRes, usersRes, salesRes] = await Promise.all([
-          axios.get("/api/reports/popular-movies"),
-          axios.get("/api/reports/movie-occupancy"),
-          axios.get("/api/reports/occupancy"),
-          axios.get("/api/reports/pattern"),
-          axios.get("/api/reports/sales-trend"),
-        ]);
+        const [moviesRes, movieOccRes, showOccRes, usersRes, salesRes] =
+          await Promise.all([
+            axios.get("/api/reports/popular-movies"),
+            axios.get("/api/reports/movie-occupancy"),
+            axios.get("/api/reports/occupancy"),
+            axios.get("/api/reports/pattern"),
+            axios.get("/api/reports/sales-trend"),
+          ]);
 
         setPopularMovies(moviesRes.data.data);
         setMovieOccupancy(movieOccRes.data.data);
@@ -48,30 +56,24 @@ const ReportsDashboard = () => {
   return (
     <div className="p-4 space-y-10">
       {/* Popular Movies */}
+    
       <section>
+        
         <h2 className="text-xl font-bold mb-2">Popular Movies</h2>
-        <table className="w-full border">
-          <thead>
-            <tr>
-              <th className="border px-2 py-1">Movie</th>
-              <th className="border px-2 py-1">Total Seats</th>
-              <th className="border px-2 py-1">Occupied Seats</th>
-              <th className="border px-2 py-1">Occupancy Rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            {popularMovies.map((movie, idx) => (
-              <tr key={idx}>
-                <td className="border px-2 py-1">{movie.title}</td>
-                <td className="border px-2 py-1">{movie.totalSeats}</td>
-                <td className="border px-2 py-1">{movie.totalOccupied}</td>
-                <td className="border px-2 py-1">{movie.occupancyRate}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <ResponsiveContainer width="100%" height={300}>
+          
+          <BarChart
+            data={popularMovies}
+            layout="vertical"
+            margin={{ left: 120 }}
+            barCategoryGap="30%"
+          >
+            
+            <XAxis type="number" /> <YAxis type="category" dataKey="title" />
+            <Tooltip /> <Bar dataKey="totalSeats" fill="#8884d8" />
+          </BarChart>
+        </ResponsiveContainer>
       </section>
-
       {/* Toggle Movie / Show Occupancy */}
       <section>
         <h2 className="text-xl font-bold mb-2 flex items-center justify-between">
@@ -109,9 +111,15 @@ const ReportsDashboard = () => {
               ? showOccupancy.map((show, idx) => (
                   <tr key={idx}>
                     <td className="border px-2 py-1">{show.title}</td>
-                    <td className="border px-2 py-1">{new Date(show.showDateTime).toLocaleString()}</td>
-                    <td className="border px-2 py-1">{show.totalSeats || "N/A"}</td>
-                    <td className="border px-2 py-1">{show.bookedSeatsCount}</td>
+                    <td className="border px-2 py-1">
+                      {new Date(show.showDateTime).toLocaleString()}
+                    </td>
+                    <td className="border px-2 py-1">
+                      {show.totalSeats || "N/A"}
+                    </td>
+                    <td className="border px-2 py-1">
+                      {show.bookedSeatsCount}
+                    </td>
                     <td className="border px-2 py-1">{show.occupancyRate}</td>
                   </tr>
                 ))
@@ -126,7 +134,6 @@ const ReportsDashboard = () => {
           </tbody>
         </table>
       </section>
-
       {/* Active Users */}
       <section>
         <h2 className="text-xl font-bold mb-2">Active Users</h2>
@@ -149,7 +156,6 @@ const ReportsDashboard = () => {
           </tbody>
         </table>
       </section>
-
       {/* Booking & Revenue Trends */}
       <section>
         <h2 className="text-xl font-bold mb-2">Booking & Revenue Trends</h2>
@@ -162,8 +168,18 @@ const ReportsDashboard = () => {
                 <CartesianGrid stroke="#ccc" />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="totalBookings" stroke="#8884d8" name="Bookings" />
-                <Line type="monotone" dataKey="totalSeats" stroke="#82ca9d" name="Seats Booked" />
+                <Line
+                  type="monotone"
+                  dataKey="totalBookings"
+                  stroke="#8884d8"
+                  name="Bookings"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="totalSeats"
+                  stroke="#82ca9d"
+                  name="Seats Booked"
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -176,7 +192,12 @@ const ReportsDashboard = () => {
                 <CartesianGrid stroke="#ccc" />
                 <Tooltip formatter={(value) => `₹${value}`} />
                 <Legend />
-                <Line type="monotone" dataKey="totalRevenue" stroke="#ff7300" name="Revenue" />
+                <Line
+                  type="monotone"
+                  dataKey="totalRevenue"
+                  stroke="#ff7300"
+                  name="Revenue"
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
