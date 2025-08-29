@@ -25,11 +25,11 @@ export const AppProvider = ({ children }) => {
           Authorization: `Bearer ${await getToken()}`,
         },
       });
-    //   setIsAdmin(data.isAdmin);
-    //   if (!data.isAdmin && location.pathname.startsWith("/admin")) {
-    //     navigate("/");
-    //     toast.error("You are not authorized to access admin dashboard");
-    //   }
+      setIsAdmin(data.isAdmin);
+      if (!data.isAdmin && location.pathname.startsWith("/admin")) {
+        navigate("/");
+        toast.error("You are not authorized to access admin dashboard");
+      }
     } catch (error) {
       console.log(error);
     }
