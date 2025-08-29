@@ -43,7 +43,7 @@ const Navbar = () => {
   };
   
   return (
-    <div className="fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5">
+    <div className="fixed top-0 left-0 z-50 w-full flex items-center justify-between px-2 md:px-8 lg:px-10">
       
       {/* Logo */}
       <Link to="/" className="max-md:flex-1">

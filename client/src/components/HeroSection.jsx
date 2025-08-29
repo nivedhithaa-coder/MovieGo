@@ -7,15 +7,15 @@ const HeroSection=()=>{
     const navigate=useNavigate();
   return(
     <div className='flex flex-col items-start justify-center gap-4 px-6 md:px-16 lg:px-36 
-    bg-[url("/bg5.webp")] bg-cover bg-center bg-no-repeat h-screen'>
+    bg-[url("/jurassic.jpg")] bg-contain bg-center bg-no-repeat h-screen'>
         
         <h1 className='text-5xl md:text-[70px] md:leading-18 font-semibold 
-        max-w-110'>INTERSTELLAR</h1>
+        max-w-150'>Jurassic World<br/><span className='text-4xl text-justify'>Rebirth</span></h1>
 
         <div className='flex items-center gap-4 text-gray-300'>
             <span>Action|Adventure|Sci-Fi</span>
             <div className='flex items-center gap-1'>
-                <CalendarIcon className='w-4.5 h-4.5'/>2019
+                <CalendarIcon className='w-4.5 h-4.5'/>2025
             </div>
             <div className='flex items-center gap-1'>
                 <ClockIcon className='w-4.5 h-4.5'/>3h 12m
