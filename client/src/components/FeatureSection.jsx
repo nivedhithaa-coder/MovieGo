@@ -26,7 +26,7 @@ console.log(shows)
         <div className='flex flex-wrap max-sm:justify-center gap-8 mt-8'>
   {shows
     .filter(show => show.movie) // ✅ skip shows without a movie
-    .slice(0, 8)
+    .slice(0, 9)
     .map(show => (
       <MovieCard key={show._id} movie={show.movie} />
     ))}
