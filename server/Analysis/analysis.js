@@ -174,3 +174,70 @@ export const salesTrend = async (req, res) => {
     });
   }
 };
+
+export const getMovieOccupancy = async (req, res) => {
+  try {
+    const result = await Show.aggregate([
+      // Lookup movie details
+      {
+        $lookup: {
+          from: "movies",
+          localField: "movie",
+          foreignField: "_id",
+          as: "movieDetails",
+        },
+      },
+      { $unwind: "$movieDetails" },
+
+      // Count occupied seats
+      {
+        $addFields: {
+          occupiedCount: { $size: { $objectToArray: "$occupiedSeats" } },
+          totalSeats: 100, // 👈 change this if you have dynamic seat capacity
+        },
+      },
+
+      // Group by movie
+      {
+        $group: {
+          _id: "$movieDetails._id",
+          title: { $first: "$movieDetails.title" },
+          totalSeats: { $sum: "$totalSeats" },
+          totalOccupied: { $sum: "$occupiedCount" },
+        },
+      },
+
+      // Calculate occupancy %
+      {
+        $addFields: {
+          occupancyRate: {
+            $cond: [
+              { $eq: ["$totalSeats", 0] },
+              "0%",
+              {
+                $concat: [
+                  {
+                    $toString: {
+                      $round: [
+                        { $multiply: [{ $divide: ["$totalOccupied", "$totalSeats"] }, 100] },
+                        2,
+                      ],
+                    },
+                  },
+                  "%",
+                ],
+              },
+            ],
+          },
+        },
+      },
+
+      { $sort: { occupancyRate: -1 } },
+    ]);
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Error fetching occupancy" });
+  }
+};
