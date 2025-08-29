@@ -1,5 +1,7 @@
 ##### Important Infos
-
+Made kic*******@**cret.com as admin so that u can check if shows are beingadded and dashboard data. On using anyother data admin links not accessible.
+Reports and analysis implemented along with search option. Using realtime cinema API data from tmdb all the shows displayed are recently released films.
+All comments mentioned in reports are addressed. 
 card number valid:4242 4242 4242 4242
 
 # MERN Movie Ticket Booking App
