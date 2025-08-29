@@ -8,7 +8,9 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
+  ResponsiveContainer, BarChart, Bar
+
+
 } from "recharts";
 
 const ReportsDashboard = () => {
