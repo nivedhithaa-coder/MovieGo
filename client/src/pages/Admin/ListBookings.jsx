@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { dummyShowsData, dummyBookingData } from "../../assets/assets";
 import Title from "../../components/admin/Title";
 import { dateFormat } from "../../lib/dateFormat";
 import { useAppContext } from "../../context/AppContext";
@@ -13,19 +12,18 @@ const ListBookings = () => {
 
   const getAllBookings = async () => {
     try {
-      const { data } = await axios.get('/api/admin/all-bookings', {
+      const { data } = await axios.get("/api/admin/all-bookings", {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
-      setBookings(data.bookings)
-    }catch(error){
+      setBookings(data.bookings);
+    } catch (error) {
       console.log(error);
     }
     setLoading(false);
-  }
+  };
+
   useEffect(() => {
-    if(user){
-    getAllBookings();
-    }
+    if (user) getAllBookings();
   }, [user]);
 
   return !loading ? (
@@ -43,26 +41,31 @@ const ListBookings = () => {
             </tr>
           </thead>
           <tbody className="text-sm font-light">
-            {bookings.map((item, index) => (
-              <tr
-                key={index}
-                className="border-b border-primary/20 bg-primary/5 even:bg-primary/10"
-              >
-                <td className="p-2 min-w-45 pl-5">{item.user.name}</td>
-                <td className="p-2 pl-5">{item.show.movie.title}</td>
-                <td className="p-2 pl-5">
-                  {dateFormat(item.show.showDateTime)}
-                </td>
-                <td className="p-2 pl-5">
-                  {Object.keys(item.bookedSeats)
-                    .map((seat) => item.bookedSeats[seat])
-                    .join(",")}
-                </td>
-                <td className="p-2 pl-5">
-                  {currency} {item.amount}
-                </td>
-              </tr>
-            ))}
+            {bookings.map((item, index) => {
+              const show = item.show;
+              const movie = show?.movie;
+
+              return (
+                <tr
+                  key={index}
+                  className="border-b border-primary/20 bg-primary/5 even:bg-primary/10 w-full"
+                >
+                  <td className="p-2 min-w-30 pl-5">{item.user?.name || "-"}</td>
+                  <td className="p-2 pl-5">{movie?.title || "-"}</td>
+                  <td className="p-2 pl-5">
+                    {show?.showDateTime ? dateFormat(show.showDateTime) : "-"}
+                  </td>
+                  <td className="p-2 pl-5 w-30">
+                    {item.bookedSeats?.length > 0
+                      ? item.bookedSeats.join(", ")
+                      : "-"}
+                  </td>
+                  <td className="p-2 pl-5">
+                    {currency} {item.amount || 0}
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
