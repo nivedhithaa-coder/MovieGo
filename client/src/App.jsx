@@ -17,16 +17,18 @@ import { useAppContext } from "./context/AppContext";
 import { SignIn } from "@clerk/clerk-react";
 import Loading from "./components/Loading";
 import AdminReports from "./pages/Admin/AdminReports";
-
+import RoleSelectionModal from "./components/RoleSelectionModal.jsx";
 const App = () => {
   const isAdminRoute = useLocation().pathname.startsWith("/admin");
 
-  const { user } = useAppContext();
+  const { user, showRoleModal,saveRole } = useAppContext();
 
   return (
     <>
+     {showRoleModal && <RoleSelectionModal onSubmit={saveRole} />}
+
       <Toaster />
-      {!isAdminRoute && <Navbar />}
+      {<Navbar />}
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/movies" element={<Movies />}></Route>

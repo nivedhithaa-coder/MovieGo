@@ -12,7 +12,7 @@ import userRouter from './routes/userRoutes.js';
 import { stripeWebhooks } from './controllers/stripeWebhooks.js';
 import searchRouter from './routes/searchRoutes.js';
 import analysisRouter from './routes/analysisRoutes.js';
-
+import authRoutes from './routes/authRoutes.js';
 
 const app=express();
 const port=3000;
@@ -38,4 +38,7 @@ app.use('/api/admin',adminRouter)
 app.use('/api/user',userRouter)
 app.use('/api/shows',searchRouter)
 app.use('/api/reports',analysisRouter)
+
+app.use('/api/auth', authRoutes);
+
 app.listen(port, () => console.log(`server listening at http://localhost:${port}`));
